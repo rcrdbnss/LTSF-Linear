@@ -1,4 +1,5 @@
 from data_provider.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_Pred
+from data_provider.ists_utils import DatasetBaselineISTS
 from torch.utils.data import DataLoader
 
 data_dict = {
@@ -7,13 +8,15 @@ data_dict = {
     'ETTm1': Dataset_ETT_minute,
     'ETTm2': Dataset_ETT_minute,
     'custom': Dataset_Custom,
+    'adbpo': DatasetBaselineISTS,
+    'french': DatasetBaselineISTS,
 }
 
 
 def data_provider(args, flag):
     Data = data_dict[args.data]
     timeenc = 0 if args.embed != 'timeF' else 1
-    train_only = args.train_only
+    # train_only = args.train_only
 
     if flag == 'test':
         shuffle_flag = False
@@ -41,7 +44,7 @@ def data_provider(args, flag):
         target=args.target,
         timeenc=timeenc,
         freq=freq,
-        train_only=train_only
+        # train_only=train_only
     )
     print(flag, len(data_set))
     data_loader = DataLoader(
